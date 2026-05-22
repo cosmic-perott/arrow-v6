@@ -1,3 +1,2 @@
-# Arrow
-## Open-Source Internet Crawler and Extractor
+# Arrow: Open-Source Internet Crawler and Extractor
 
