@@ -6,24 +6,6 @@ import trafilatura
 import httpx
 from flashrank import Ranker, RerankRequest
 from urllib.parse import urlparse
-import os
-from fastapi import FastAPI, Query, Depends, HTTPException, Security
-from fastapi.security import APIKeyHeader
-
-app = FastAPI(title="ARROW API")
-
-API_KEY_NAME = "X-API-KEY"
-api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
-
-SHADOW_TAVILY_KEY = os.getenv("SHADOW_TAVILY_KEY", "local_development_fallback_key")
-
-async def verify_api_key(api_key: str = Security(api_key_header)):
-    if api_key != SHADOW_TAVILY_KEY:
-        raise HTTPException(
-            status_code=403, 
-            detail="Could not validate credentials. Missing or invalid X-API-KEY header."
-        )
-    return api_key
     
 app = FastAPI(title="ShadowTavily API", description="AI-native search engine (Bulletproof Edition)")
 
