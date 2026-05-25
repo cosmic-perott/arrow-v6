@@ -11,7 +11,6 @@ const PORT = 8000;
 let rankerPipeline;
 async function initRanker() {
     console.log("Loading cross-encoder model...");
-    // Using MiniLM cross-encoder matching your ms-marco python model
     rankerPipeline = await pipeline('text-classification', 'Xenova/ms-marco-MiniLM-L-6-v2');
     console.log("Model loaded successfully.");
 }
@@ -75,7 +74,6 @@ app.get('/search', async (req, res) => {
         const newsQuery = `${cleanQuery} semiconductor nvidia amd bami tpu`;
         rawResults = await searchNews({ query: newsQuery, maxResults: 8 });
     } catch (e) {
-        // Fall back gracefully
     }
 
     if (!rawResults || rawResults.length === 0) {
@@ -120,9 +118,7 @@ app.get('/search', async (req, res) => {
     let finalResults = [];
     if (passages.length > 0 && rankerPipeline) {
         try {
-            // Compute scores for every passage paired with the original query
             const rerankPromises = passages.map(async (p) => {
-                // Formatting input schema for sentence-transformers cross-encoder
                 const result = await rankerPipeline(query, p.text); 
                 return {
                     title: p.meta.title,
@@ -151,6 +147,6 @@ app.get('/search', async (req, res) => {
 
 initRanker().then(() => {
     app.listen(PORT, () => {
-        console.log(`🚀 ShadowTavily API listening at http://localhost:${PORT}`);
+        console.log('Arrow listening at http://localhost:${PORT}`);
     });
 });
